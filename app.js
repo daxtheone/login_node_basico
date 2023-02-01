@@ -1,10 +1,20 @@
 // 1 - Invocamos a Express
 const express = require('express');
 const app = express();
+const cors = require("cors");
 
+
+
+const DIRECTORIO_PERMITIDO_CORS = "*";
+
+app.use(cors({
+  origin: DIRECTORIO_PERMITIDO_CORS
+}));
 //2 - Para poder capturar los datos del formulario (sin urlencoded nos devuelve "undefined")
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());//además le decimos a express que vamos a usar json
+
+
 
 //3- Invocamos a dotenv
 const dotenv = require('dotenv');
@@ -124,6 +134,65 @@ app.get('/logout', function (req, res) {
 });
 
 
-app.listen(3000, (req, res)=>{
-    console.log('SERVER RUNNING IN http://localhost:3000');
+
+app.post('/prueba', async (req, res)=> {  
+
+    /* res.send({
+		'status': 'failed',
+		'error': {
+			'message':{
+				"login": 'email / password invalidos'
+			}
+		}
+	});*/
+	res.send({
+		"status": "success",
+		"token": "kj3bh12321jh3gjh21g3jh21g3jh1",
+		"user": {
+			"mail": "daniel@gmail.com",
+			 "nombre":"daniel rico"
+		 }
+	});
+
+	
+
+
+
+});
+
+
+
+app.post('/test', async (req, res)=> {
+	const user = req.body.email;
+	const pass = req.body.password;    
+    res.send({
+		'status': 'failed',
+		'error': {
+			'message':{
+				"login": 'email / password invalidos'
+			}
+		}
+	});
+	res.end();
+	if (user && pass) {
+		console.log("Todo very good")
+		res.send('Please enter user and Password!');
+		res.end();
+	} else {	
+		console.log("Todo very bad")
+		res.send({
+			'status': 'failed',
+			'error': {
+				'message':{
+					"login": 'email / password invalidos'
+				}
+			}
+		});
+		res.end();
+	}
+});
+
+
+app.listen(3003, (req, res)=>{
+    console.log('SERVER RUNNING IN http://localhost:3001');
 });
